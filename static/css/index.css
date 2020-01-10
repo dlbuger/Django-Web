@@ -16,6 +16,9 @@ body {
 }
 
 
+.choice{
+    min-width: 500px;
+}
 
 .search-button {
     color: white;
@@ -71,8 +74,9 @@ body {
 
 #toast {
     position: fixed;
-    top: 0;
+    top: 0px;
     left: 50%;
+    position: absolute;
     background-color: #f6e58d;
     color: #30336b;
     padding: 24px;
@@ -88,6 +92,8 @@ body {
     visibility: visible;
     top: 20px;
     transition: 0.4s;
+    transform: translate(-50%, 0%);
+
 }
 
 .new-program a, .new-employee a {
@@ -117,8 +123,8 @@ body {
     width: 20rem;
     height: 7rem;
     font-size: 42px;
+    z-index: 1;
 }
-
 
 
 .new-employee a {
@@ -127,12 +133,14 @@ body {
 
 .new-employee a:hover {
     border: 0px solid white;
-    background:#778beb;
-    box-shadow: 0 0 10px #778beb, 0 0 40px #78e08f, 0 0 80px #778beb;
+    background:#ff6b81;
+    box-shadow: 0 0 10px #ff6b81, 0 0 40px #78e08f, 0 0 80px #ff6b81;
     width: 20rem;
     height: 7rem;
     font-size: 42px;
     color: white;
+    z-index: 1;
+
 }
 
 
