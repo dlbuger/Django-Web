@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway|Roboto+Mono&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.table {
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background: linear-gradient(-45deg, #EE7752, rgb(173, 97, 110), rgb(101, 192, 163), rgb(79, 209, 221));
+    background-size: 400% 400%;
+    position: fixed;
+    animation: change 10s ease-in-out infinite;
+}
+
+h1 {
+    font-size: 38px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    position: fixed;
+    left: 50%;
+    top: 13rem;
+    transform: translate(-50%, -50%);
+    padding: 2rem 15rem;
+}
+
+.card {
+    width: 65rem;
+    height: 75rem;
+    left: 50%;
+    margin-top: 60rem;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.192);
+    box-shadow: 6px 8px rgba(0, 0, 0, 0.292);
+    position: fixed;
+}
+
+.card div {
+    font-size: 20px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.card p {
+    padding-top: 10px;
+}
+
+.parts {
+    padding-top: 55%;
+}
+
+.label {
+    font-weight: bold;
+    color: #dff9fb;
+    text-align: center;
+    border-bottom: 1.5px solid #f9ca24;
+}
+
+.parts div {
+    padding-top: 25px;
+}
+
+.left {
+    float: left;
+    padding-top: 10px;
+    padding-left: 30px;
+}
+
+.right {
+    float: right;
+    padding-top: 10px;
+    padding-right: 30px;
+}
+
+.center {
+    padding-top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
+}
+
+.label,
+.p {
+    padding-top: 20px;
+    letter-spacing: 3px;
+}
+
+.employee_name {
+    padding-left: 30px;
+    top: 30%;
+    position: absolute;
+}
+
+.employee_name label,
+.employee_name p {
+    font-size: 38px;
+}
+
+@keyframes change {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}

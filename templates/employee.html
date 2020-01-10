@@ -1,14 +1,63 @@
-<!DOCTYPE html>
+<!DOCTYPE html> {% load static %}
 <html lang="en">
 
 <head>
     <title>Search Result Employee</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel='stylesheet' type='text/css' href="{% static 'css/employee.css' %}" />
+
 </head>
 
 <body>
-    <h1>Search Result Employee</h1>
     <div class='table' id='employee-result'>
-        {{ dataframe|safe }}
+        <h1>Employee</h1>
+        <div class='card'>
+            <div class="employee_name">
+                <label class="label">姓名</label>
+                <p class="attr">{{姓名 | safe}}</p>
+            </div>
+            <div class="parts">
+
+                <div class="left">
+                    <div class='employee_id'>
+                        <label class='label'>员工号</label>
+                        <p class="attr">{{员工号 | safe}}</p>
+                    </div>
+
+                    <div class="daily_peyment">
+                        <label class="label">日结工资</label>
+                        <p class="attr">{{单位人工 | safe}}</p>
+                    </div>
+                </div>
+
+                <div class="center">
+                    <div class="division">
+                        <label class='label'>部门</label>
+                        <p calss=attr>{{部门 | safe}}</p>
+                    </div>
+
+                    <div class="expect_period">
+                        <label class='label'>预计工期</label>
+                        <p class="attr">{{预算人工 | safe}}</p>
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="contract_num">
+                        <label class='label'>合同号</label class='label'>
+                        <p class="attr">{{合同号 | safe}}</p>
+                    </div>
+                    
+                    <div class="actual_period">
+                        <label class='label'>实际工期</label>
+                        <p class="attr">{{实际人工 | safe}}</p>
+                    </div>
+                </div>
+                <div class="adj">
+                    {{adj|safe}}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

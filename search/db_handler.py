@@ -19,7 +19,8 @@ def search_by_employee(id):
         FROM 人工成本, 员工
         WHERE 人工成本.员工号 = 员工.员工号;
         '''
-    return pd.read_sql(query, sql)
+    df = pd.read_sql(query, sql)
+    return df[df['员工号']==id]
 
 
 def search_by_contract(id):
@@ -39,3 +40,18 @@ def search_by_contract(id):
         FROM 项目 RIGHT JOIN 实际成本 ON 实际成本.合同号=项目.合同号;
              """
     return {'预算': pd.read_sql(query1, sql),'实际':pd.read_sql(query2, sql)}
+
+def employee_record():
+
+    '''
+        返回一个所有员工号的List, 用来判定搜索的id是否存在数据库
+    '''
+    
+    query = '''
+    SELECT 员工.员工号, 姓名, 部门, 单位人工, 合同号, 预算人工, 实际人工, 修正1, 修正2, 修正3\
+    FROM 人工成本, 员工
+    WHERE 人工成本.员工号 = 员工.员工号;
+    '''
+    return pd.read_sql(query, sql)['员工号'].values
+
+

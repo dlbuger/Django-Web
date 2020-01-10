@@ -20,18 +20,14 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # 功能
 
 from modify.views import modify # 修改
-from add.views import add # 添加
 from fuzzy_search.views import fuzzy_search #模糊搜索
-
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('search.urls')),
-    path('modify/', modify, name='modify'),
-    path('add/', add, name='add'),
-    path('fuzzy-search', fuzzy_search, name='fuzzy-search'),
+    path('', include('add.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
