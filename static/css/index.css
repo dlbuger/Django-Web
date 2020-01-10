@@ -133,8 +133,8 @@ body {
 
 .new-employee a:hover {
     border: 0px solid white;
-    background:#ff6b81;
-    box-shadow: 0 0 10px #ff6b81, 0 0 40px #78e08f, 0 0 80px #ff6b81;
+    background:#78e08f;
+    box-shadow: 0 0 10px #78e08f, 0 0 40px #ff6b81, 0 0 80px #78e08f;
     width: 20rem;
     height: 7rem;
     font-size: 42px;
