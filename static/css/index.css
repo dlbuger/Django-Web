@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: #e84118;
+    background:#e55039;
 }
 
 .search-box {
@@ -9,24 +9,28 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #2f3640;
+    background: #fad390;
     height: 60px;
     border-radius: 60px;
     padding: 10px;
 }
 
+
+
 .search-button {
-    color: #e84118;
+    color: white;
     float: right;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #2f3640;
+    background: linear-gradient(-45deg, #fc5c65,#7bed9f,#eb4d4b,#78e08f);
+    background-size: 400% 400%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
     border: none;
+    animation: change 10s ease-in-out infinite;
 }
 
 .search-text {
@@ -39,14 +43,109 @@ body {
     font-size: 16px;
     transition: 0.4s;
     line-height: 60px;
-    width: 0px;
+    width: 0;
 }
 
-.search-box:hover>.search-text {
+.search-box:hover {
+    background: linear-gradient(-45deg, #f0932b,#7ed6df,#eb4d4b,#78e08f);
+    background-size: 400% 400%;
+    animation: change 7s ease-in-out infinite;
+}
+
+.search-box:hover>.search-text{
     width: 240px;
     padding: 0 6px;
+    color:#30336b
+}
+
+.search-text:focus {
+    width: 240px;
+    padding: 0 0px;
+    color:#30336b;
 }
 
 .search-box:hover>.search-button {
     color: white;
+    background: #4b4b4b70;
+}
+
+#toast {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    background-color: #f6e58d;
+    color: #30336b;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    z-index: 1;
+    box-shadow: 1 1 20px rgba(0, 0, 0, 0.486);
+    visibility: hidden;
+    transition: 0.4s;
+}
+
+#toast.show {
+    visibility: visible;
+    top: 20px;
+    transition: 0.4s;
+}
+
+.new-program a, .new-employee a {
+    text-decoration: none;
+    color: white;
+    font-size: 38px;
+    text-align: center;
+    letter-spacing: 5px;
+    padding: 2rem 2rem;
+    border: 12px solid white;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    width: 15rem;
+    height: 4rem;
+    text-align: center;
+    top: 70%;
+    transition: 0.4s;
+}
+.new-program a{
+    left: 33.33%;
+}
+
+.new-program a:hover {
+    border: 0px solid white;
+    background:#2196f3;
+    box-shadow: 0 0 10px #2196f3, 0 0 40px #78e08f, 0 0 80px #2196f3;
+    width: 20rem;
+    height: 7rem;
+    font-size: 42px;
+}
+
+
+
+.new-employee a {
+    left: 66.66%;
+}
+
+.new-employee a:hover {
+    border: 0px solid white;
+    background:#778beb;
+    box-shadow: 0 0 10px #778beb, 0 0 40px #78e08f, 0 0 80px #778beb;
+    width: 20rem;
+    height: 7rem;
+    font-size: 42px;
+    color: white;
+}
+
+
+
+
+@keyframes change {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
 }
