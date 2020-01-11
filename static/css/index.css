@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway|Roboto+Mono&display=swap');
 body {
     margin: 0;
     padding: 0;
-    background:#e55039;
+    background: #e55039;
+    font-family: 'Raleway', sans-serif;
 }
 
 .search-box {
@@ -9,15 +11,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #fad390;
+    background: #dff9fb;
     height: 60px;
     border-radius: 60px;
     padding: 10px;
-}
-
-
-.choice{
-    min-width: 500px;
 }
 
 .search-button {
@@ -26,14 +23,15 @@ body {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(-45deg, #fc5c65,#7bed9f,#eb4d4b,#78e08f);
-    background-size: 400% 400%;
+    background: linear-gradient(-45deg, #7ed6df, #7bed9f, #7ed6df, #78e08f);
+    background-size: 300% 300%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
     border: none;
-    animation: change 10s ease-in-out infinite;
+    outline: none;
+    animation: change 3s ease-in-out infinite;
 }
 
 .search-text {
@@ -50,26 +48,30 @@ body {
 }
 
 .search-box:hover {
-    background: linear-gradient(-45deg, #f0932b,#7ed6df,#eb4d4b,#78e08f);
+    background: linear-gradient(-45deg, #f0932b, #7ed6df, #78e08f, #fbc531);
     background-size: 400% 400%;
-    animation: change 7s ease-in-out infinite;
+    animation: change 10s ease-in-out infinite;
+    transition: linear 0.5s;
 }
 
-.search-box:hover>.search-text{
-    width: 240px;
+.search-box:hover>.search-text {
+    width: 380px;
     padding: 0 6px;
-    color:#30336b
-}
-
-.search-text:focus {
-    width: 240px;
-    padding: 0 0px;
-    color:#30336b;
+    color: #30336b;
 }
 
 .search-box:hover>.search-button {
-    color: white;
-    background: #4b4b4b70;
+    background: #2d3436;
+}
+
+.search-text:focus {
+    width: 380px;
+    padding: 0 0px;
+    color: #30336b;
+}
+
+.search-text:focus>.new-program a {
+    top: 10%
 }
 
 #toast {
@@ -85,7 +87,7 @@ body {
     z-index: 1;
     box-shadow: 1 1 20px rgba(0, 0, 0, 0.486);
     visibility: hidden;
-    transition: 0.4s;
+    transition: ease-in-out 0.4s;
 }
 
 #toast.show {
@@ -93,13 +95,12 @@ body {
     top: 20px;
     transition: 0.4s;
     transform: translate(-50%, 0%);
-
 }
 
-.new-program a, .new-employee a {
+.choice a {
     text-decoration: none;
     color: white;
-    font-size: 38px;
+    font-size: 250%;
     text-align: center;
     letter-spacing: 5px;
     padding: 2rem 2rem;
@@ -110,22 +111,22 @@ body {
     height: 4rem;
     text-align: center;
     top: 70%;
-    transition: 0.4s;
+    transition: ease-in-out 0.4s;
 }
-.new-program a{
+
+.new-program a {
     left: 33.33%;
 }
 
 .new-program a:hover {
     border: 0px solid white;
-    background:#2196f3;
+    background: #2196f3;
     box-shadow: 0 0 10px #2196f3, 0 0 40px #78e08f, 0 0 80px #2196f3;
     width: 20rem;
     height: 7rem;
-    font-size: 42px;
+    font-size: 350%;
     z-index: 1;
 }
-
 
 .new-employee a {
     left: 66.66%;
@@ -133,18 +134,51 @@ body {
 
 .new-employee a:hover {
     border: 0px solid white;
-    background:#78e08f;
+    background: #78e08f;
     box-shadow: 0 0 10px #78e08f, 0 0 40px #ff6b81, 0 0 80px #78e08f;
     width: 20rem;
     height: 7rem;
-    font-size: 42px;
+    font-size: 350%;
     color: white;
     z-index: 1;
-
 }
 
-
-
+@media only screen and (max-width: 900px) {
+    .search-box {
+        top: 180px;
+        position: fixed;
+    }
+    .choice a {
+        border: 6px solid white;
+        padding: 1.5rem 1.5rem
+    }
+    .new-program a {
+        top: 400px;
+        left: 50%;
+        position: fixed;
+    }
+    .new-employee a {
+        top: 580px;
+        left: 50%;
+        position: fixed;
+    }
+    .search-box:hover>.search-text {
+        width: 180px;
+        padding: 0 6px;
+        color: #30336b;
+        transition: ease-out 1s;
+        position: absolute;
+    }
+    .search-box:hover {
+        width: 280px;
+        transition: ease-in-out 0.6s;
+    }
+    .search-text:focus {
+        width: 180px;
+        padding: 0 6px;
+        color: #30336b;
+    }
+}
 
 @keyframes change {
     0% {

@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'search',
     'modify',
-    'add',
+    'add_program',
     'fuzzy_search',
 ]
 

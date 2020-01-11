@@ -1,48 +1,32 @@
-<!DOCTYPE html>{% load static %}
-<html>
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<script src="{%static 'js/index.js'%}"></script>
+<link rel='stylesheet' type='text/css' href="{% static 'css/index.css' %}" />
+{% endblock head %}
 
-<head>
-    <meta charset='UTF-8'>
-    <script src="{%static 'js/index.js'%}"></script>
-    <link rel='stylesheet' type='text/css' href="{% static 'css/index.css' %}" />
-    <meta name="viewport" content="width=device-width">
-    <link rel="icon" href="data:,">
-    <script src="https://kit.fontawesome.com/2ff38ac57d.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-    <title>Search</title>
-</head>
+{% block title %}Search{% endblock title %}
 
-<body>
-    {% if messages %}
-        {% for msg in messages%}
-        <div class='animated 1 tada delay-0s'>
-           <div id="toast">
-                   {{msg}}
-           </div>
-        </div>
-           <script>showToast()</script>
-        {% endfor %}
-    {% endif %}
 
+
+{% block content %}
     <div class='search-box'>
-            <input id='index-search-text' class='search-text' type="text" placeholder="Type to search" value="{{search_num}}" required>
-            <button class="search-button" type='submit' id='search-button' onclick="sss('{{x}}')">
-                <i class="fas fa-search">
-                </i>
-            </button>
+        <input id='index-search-text' class='search-text' type="text" placeholder="Type to search" value="{{search_num}}" required>
+        <button class="search-button" type='submit' id='search-button' onclick="sss('{{x}}')">
+            <i class="fas fa-search">
+            </i>
+        </button>
     </div>
-
     <div class='choice'>
         <div class="new-program">
-            <a href="/new-program/" id=>新接任务</a>
+            <a href="/new-program/">新增任务</a>
         </div>
-    
+
         <div class="new-employee">
             <a href="/new-employee">战队招募</a>
         </div>
     </div>
-
+{% endblock content %}
 
 </body>
 </html>

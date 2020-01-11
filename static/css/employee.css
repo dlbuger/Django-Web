@@ -10,14 +10,15 @@ html {
     font-family: 'Montserrat', sans-serif;
 }
 
+
 .table {
     width: 100%;
     height: 100%;
     color: #fff;
-    background: linear-gradient(-45deg, #EE7752, rgb(173, 97, 110), rgb(101, 192, 163), rgb(79, 209, 221));
+    background: linear-gradient(-45deg, #EE7752, rgb(173, 97, 110),#95afc0,  rgb(101, 192, 163));
     background-size: 400% 400%;
     position: fixed;
-    animation: change 10s ease-in-out infinite;
+    animation: change 20s ease-in-out infinite;
 }
 
 h1 {
@@ -31,16 +32,20 @@ h1 {
     transform: translate(-50%, -50%);
     padding: 2rem 15rem;
 }
-
+a{
+    text-decoration: none;
+}
 .card {
     width: 65rem;
     height: 75rem;
     left: 50%;
     margin-top: 60rem;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.192);
+    background: rgba(66, 66, 66, 0.287);
     box-shadow: 6px 8px rgba(0, 0, 0, 0.292);
+    filter: drop-shadow(0px 20px 10px rgba(255,255,255,0.3));
     position: fixed;
+
 }
 
 .card div {
@@ -50,6 +55,7 @@ h1 {
 
 .card p {
     padding-top: 10px;
+    filter: drop-shadow(0px 20px 10px rgba(255,255,255,0.3));
 }
 
 .parts {
@@ -101,6 +107,29 @@ h1 {
 .employee_name label,
 .employee_name p {
     font-size: 38px;
+}
+
+
+.go-back a{
+    font-size: 32px;
+    position: fixed;
+    color:rgba(0, 0, 0, 0.5);
+    background: #fbc531;
+    width: 150px;
+    height: 80px;
+    left: -80px;
+    top: 80px;   
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 3px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    letter-spacing: 5px;
+    transition: 0.2s ease-in-out;
+}
+
+.go-back a:hover{
+    left: 0px;
 }
 
 @keyframes change {

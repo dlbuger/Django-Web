@@ -1,64 +1,67 @@
-<!DOCTYPE html> {% load static %}
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <title>Search Result Employee</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel='stylesheet' type='text/css' href="{% static 'css/employee.css' %}" />
+{% block head %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/employee.css' %}" />
+{% endblock head %}
 
-</head>
+{% block title %}
+Search Result Employee
+{% endblock title %}
 
-<body>
-    <div class='table' id='employee-result'>
-        <h1>Employee</h1>
-        <div class='card'>
-            <div class="employee_name">
-                <label class="label">姓名</label>
-                <p class="attr">{{姓名 | safe}}</p>
+{% block content %}
+
+<div class='table' id='employee-result'>
+    <div class="go-back">
+        <a href="/">返回</a>
+    </div>
+    <h1>Employee</h1>
+    <div class='card'>
+        <div class="employee_name">
+            <label class="label">姓名</label>
+            <p class="attr">{{姓名 | safe}}</p>
+        </div>
+        <div class="parts">
+
+            <div class="left">
+                <div class='employee_id'>
+                    <label class='label'>员工号</label>
+                    <p class="attr">{{员工号 | safe}}</p>
+                </div>
+
+                <div class="daily_peyment">
+                    <label class="label">日结工资</label>
+                    <p class="attr">{{单位人工 | safe}}</p>
+                </div>
             </div>
-            <div class="parts">
 
-                <div class="left">
-                    <div class='employee_id'>
-                        <label class='label'>员工号</label>
-                        <p class="attr">{{员工号 | safe}}</p>
-                    </div>
-
-                    <div class="daily_peyment">
-                        <label class="label">日结工资</label>
-                        <p class="attr">{{单位人工 | safe}}</p>
-                    </div>
+            <div class="center">
+                <div class="division">
+                    <label class='label'>部门</label>
+                    <p calss=attr>{{部门 | safe}}</p>
                 </div>
 
-                <div class="center">
-                    <div class="division">
-                        <label class='label'>部门</label>
-                        <p calss=attr>{{部门 | safe}}</p>
-                    </div>
+                <div class="expect_period">
+                    <label class='label'>预计工期</label>
+                    <p class="attr">{{预算人工 | safe}}</p>
+                </div>
+            </div>
 
-                    <div class="expect_period">
-                        <label class='label'>预计工期</label>
-                        <p class="attr">{{预算人工 | safe}}</p>
-                    </div>
+            <div class="right">
+                <div class="contract_num">
+                    <label class='label'>合同号</label class='label'>
+                    <p class="attr">{{合同号 | safe}}</p>
                 </div>
 
-                <div class="right">
-                    <div class="contract_num">
-                        <label class='label'>合同号</label class='label'>
-                        <p class="attr">{{合同号 | safe}}</p>
-                    </div>
-                    
-                    <div class="actual_period">
-                        <label class='label'>实际工期</label>
-                        <p class="attr">{{实际人工 | safe}}</p>
-                    </div>
+                <div class="actual_period">
+                    <label class='label'>实际工期</label>
+                    <p class="attr">{{实际人工 | safe}}</p>
                 </div>
-                <div class="adj">
-                    {{adj|safe}}
-                </div>
+            </div>
+            <div class="adj">
+                {{adj|safe}}
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
+{% endblock content %}

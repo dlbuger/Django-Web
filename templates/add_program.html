@@ -1,0 +1,97 @@
+{% extends 'base.html' %} {% load static %} {% block head %}
+<link rel="stylesheet" href="{% static 'css/add_program.css' %}">
+{% endblock head %}
+
+{% block title %} 新增项目 {% endblock title%}
+
+
+{% block content %}<div class="title">
+    <h1>新增项目</h1>
+</div>
+
+<div class="go-back">
+    <a href="/">返回</a>
+</div>
+
+<div class="add_record">
+    <form method='post'>
+        {% csrf_token %} {{ form.non_field_errors }}
+        <div class="row_pair" id=required>
+            <div class="left">
+                {{ form.项目名称.errors }} {{ form.项目名称.label_tag }}
+                {{ form.项目名称 }}
+            </div>
+            <div class=" right">
+                {{ form.合同号.errors }} {{ form.合同号.label_tag}} {{ form.合同号 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划开始时间.errors }} {{ form.计划开始时间.label_tag }} {{ form.计划开始时间 }}
+            </div>
+            <div class=" right">
+                {{ form.实际开始时间.errors }} {{ form.实际开始时间.label_tag }} {{ form.实际开始时间 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划结束时间.errors }} {{ form.计划结束时间.label_tag }} {{ form.计划结束时间 }}
+            </div>
+            <div class=" right">
+                {{ form.实际结束时间.errors }} {{ form.实际结束时间.label_tag }} {{ form.实际结束时间 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划硬件成本.errors }} {{ form.计划硬件成本.label_tag }} {{ form.计划硬件成本 }}
+            </div>
+            <div class=" right">
+                {{ form.实际硬件成本.errors }} {{ form.实际硬件成本.label_tag }} {{ form.实际硬件成本}}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划软件成本.errors }} {{ form.计划软件成本.label_tag }} {{ form.计划软件成本 }}
+            </div>
+            <div class=" right">
+                {{ form.实际软件成本.errors }} {{ form.实际软件成本.label_tag }} {{ form.实际软件成本 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划施工成本.errors }} {{ form.计划施工成本.label_tag }} {{ form.计划施工成本 }}
+            </div>
+            <div class=" right">
+                {{ form.实际施工成本.errors }} {{ form.实际施工成本.label_tag }} {{ form.实际施工成本 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划差旅成本.errors }} {{ form.计划差旅成本.label_tag }} {{ form.计划差旅成本 }}
+            </div>
+            <div class=" right">
+                {{ form.实际差旅成本.errors }} {{ form.实际差旅成本.label_tag }} {{ form.实际差旅成本 }}
+            </div>
+        </div>
+
+        <div class="row_pair">
+            <div class="left">
+                {{ form.计划集成成本.errors }} {{ form.计划集成成本.label_tag }} {{ form.计划集成成本 }}
+            </div>
+            <div class=" right">
+                {{ form.实际集成成本.errors }} {{ form.实际集成成本.label_tag }} {{ form.实际集成成本 }}
+            </div>
+        </div>
+
+        <button class='submit' type='submit' onclick="return confirm('是否确定提交表格?')">
+            提交
+        </button>
+    </form>
+</div>
+{% endblock content %}
