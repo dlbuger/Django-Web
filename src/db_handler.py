@@ -1,16 +1,17 @@
 import pymysql as ps
 import pandas as pd
-from typing import Dict
+from typing import Dict, List, Tuple
 import warnings
+import re
 
 
 sql = ps.connections.Connection(
     host='localhost', user='reco', password='0711', database='Test')
-人工成本 = pd.read_sql("SELECT * FROM 人工成本", sql)
-员工 = pd.read_sql("SELECT * FROM 员工", sql)
-实际成本 = pd.read_sql("SELECT * FROM 实际成本", sql)
-项目 = pd.read_sql("SELECT * FROM 项目", sql)
-预算成本 = pd.read_sql("SELECT * FROM 预算成本", sql)
+# 人工成本 = pd.read_sql("SELECT * FROM 人工成本", sql)
+# 员工 = pd.read_sql("SELECT * FROM 员工", sql)
+# 实际成本 = pd.read_sql("SELECT * FROM 实际成本", sql)
+# 项目 = pd.read_sql("SELECT * FROM 项目", sql)
+# 预算成本 = pd.read_sql("SELECT * FROM 预算成本", sql)
 
 
 class SearchBackend:
@@ -62,21 +63,23 @@ class SearchBackend:
         '''
         return pd.read_sql(query, sql)['员工号'].values
 
-def ExHandler(func,data):
-    def wrapper():
+def ExceptionHandler(func):
+    def wrapper(*args, **kwargs):
         try:
-            func(data)
+            func(*args, **kwargs)
         except Exception as e:
-            warnings.warn("保存失败")
-            warnings.warn(e)
+            warnings.warn("执行Query失败\n%s"%e)
+    return wrapper
+
 
 
 class InsertBackend:
     @staticmethod
+    @ExceptionHandler
     def append_program(data: Dict) -> int:
         data = pd.Series(data)
         项目待添加 = data[['合同号','项目名称','计划开始时间', '实际开始时间', '计划结束时间', '实际结束时间']].values.tolist()
-        query_项目待添加 = 'INSERT INTO 项目 (合同号, 项目名称, 预计开始日期, 预计结束日期, 实际开始日期, 实际结束日期) VALUES(%s, %s, %s, %s, %s, %s)'
+        query_项目待添加 = 'INSERT INTO 项目 (合同号, 项目名称, 预计开始日期, 实际开始日期, 预计结束日期, 实际结束日期) VALUES(%s, %s, %s, %s, %s, %s)'
 
         预算成本待添加 = data[['合同号', '计划硬件成本', '计划软件成本', '计划差旅成本', '计划集成成本', '计划施工成本']].values.tolist()
         query_预算成本待添加 = 'INSERT INTO 预算成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
@@ -88,3 +91,113 @@ class InsertBackend:
             cursor.execute(query_预算成本待添加, 预算成本待添加)
             cursor.execute(query_实际成本带添加, 实际成本带添加)
         sql.commit()
+
+
+
+class Check:
+    """
+        一些帮出判定数据的Function
+    """
+    @staticmethod
+    @ExceptionHandler
+    def checkLength(schema_data: pd.DataFrame, data: pd.Series) -> bool:
+        '''
+            NOTICE: 只有一个是自曾的情况下
+            1. 检查长度是否一样
+            2. 如果不一样 判定是否有autoincrement -> 无: 报错
+        '''
+        if len(schema_data) != len(data.index):
+            if "auto_increment" not in schema_data['Extra'].values:
+                raise ps.DatabaseError("传入数据的columns长度和Table的columns的长度不匹配,操作终止")
+            return False
+        return True
+                
+    @staticmethod
+    @ExceptionHandler
+    def checkDtype(schema_data: pd.DataFrame, data:pd.DataFrame) -> None:
+        """
+            判定数据类型是否匹配
+        """
+        NotImplemented
+
+    @staticmethod
+    @ExceptionHandler
+    def checkDuplicated(con: ps.connections.Connection, data:pd.DataFrame) -> None:
+        """
+            判定是否有重复的数据
+        """
+        NotImplemented
+
+
+class Handler:
+    """
+        传入一个pymysql的Connection对象
+        e.g: ps.connections.Connection(
+                            host='localhost',
+                            user='reco',
+                            password='0711',
+                            database='Test'
+                            )
+    """
+    def __init__(self,connection: ps.connections.Connection) -> None:
+        self.connection = connection
+
+    @ExceptionHandler
+    def SELECT(self, table_name: str) -> pd.DataFrame:
+        _query = "SELECT * FROM %s"%(table_name)
+        return pd.read_sql(_query, self.connection)
+    
+    @ExceptionHandler
+    def TABLES(self) -> List:
+        _query = "SHOW TABLES;"
+        with self.connection.cursor() as cursor:
+            cursor.execute(_query)
+            callback = cursor.fetchall()
+        return [x[0] for x in callback]            
+    
+    @ExceptionHandler
+    def INSERT(self, table_name:str, data:pd.Series) -> None:
+        '''
+            NOTICE: 单个INSERT
+            1. 检查传入的DataFrame的columns长度是否和数据库一直
+            2. 检查传入的DataFrame的columns是否和数据库的一直
+            3. 检查数据类型是否符合
+        '''
+        schema = pd.read_sql(self.connection, "DESCRIBE %s"%table_name)
+
+        _length = Check.checkLength(schema, data)
+        _dtype = Check.checkDtype(schema, data)
+        _duplicated = Check.checkDuplicated(self.connection, data)
+        if _length:
+            COLUMNS = schema.Field.values.tolist()
+        else:
+            COLUMNS = schema.Field.values.tolist()[1:] # AUTO INCREMENT 在第0
+
+        VALUES = data.values.tolist()
+        COLUMNS = re.sub("\'","",COLUMNS)
+        with self.connection.cursor() as cursor:
+            _query = f"INSERT INTO {table_name} {COLUMNS}\
+                        VALUES( " + "%s " * len(COLUMNS) + ");"
+            cursor.execute(_query, VALUES)
+        sql.commit()
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

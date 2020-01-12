@@ -17,43 +17,43 @@ Search Result Employee
     </div>
     <h1>Employee</h1>
     <div class='card'>
-        <div class="employee_name">
+        <div id="employee_name" class='pair'>
             <label class="label">姓名</label>
             <p class="attr">{{姓名 | safe}}</p>
         </div>
-        <div class="parts">
 
+        <div class="parts">
             <div class="left">
-                <div class='employee_id'>
+                <div id='employee_id' class='pair'>
                     <label class='label'>员工号</label>
                     <p class="attr">{{员工号 | safe}}</p>
                 </div>
 
-                <div class="daily_peyment">
+                <div id="daily_peyment" class='pair'>
                     <label class="label">日结工资</label>
                     <p class="attr">{{单位人工 | safe}}</p>
                 </div>
             </div>
 
             <div class="center">
-                <div class="division">
+                <div id="division" class='pair'>
                     <label class='label'>部门</label>
                     <p calss=attr>{{部门 | safe}}</p>
                 </div>
 
-                <div class="expect_period">
+                <div id="expect_period" class='pair'>
                     <label class='label'>预计工期</label>
                     <p class="attr">{{预算人工 | safe}}</p>
                 </div>
             </div>
 
             <div class="right">
-                <div class="contract_num">
+                <div id="contract_num" class='pair'>
                     <label class='label'>合同号</label class='label'>
                     <p class="attr">{{合同号 | safe}}</p>
                 </div>
 
-                <div class="actual_period">
+                <div id="actual_period" class='pair'>
                     <label class='label'>实际工期</label>
                     <p class="attr">{{实际人工 | safe}}</p>
                 </div>

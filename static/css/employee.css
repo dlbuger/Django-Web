@@ -31,6 +31,11 @@ h1 {
     top: 13rem;
     transform: translate(-50%, -50%);
     padding: 2rem 15rem;
+    transition: 0.4s;
+}
+
+h1:hover{
+    font-size:58px;
 }
 a{
     text-decoration: none;
@@ -98,17 +103,24 @@ a{
     letter-spacing: 3px;
 }
 
-.employee_name {
+.pair{
+    transition: 0.15s;
+}
+
+.pair:hover {
+    font-size: 125%;
+}
+
+#employee_name {
     padding-left: 30px;
     top: 30%;
     position: absolute;
 }
 
-.employee_name label,
-.employee_name p {
+#employee_name label,
+#employee_name p {
     font-size: 38px;
 }
-
 
 .go-back a{
     font-size: 32px;
@@ -118,7 +130,7 @@ a{
     width: 150px;
     height: 80px;
     left: -80px;
-    top: 80px;   
+    top: 80px;
     text-align: left;
     vertical-align: middle;
     padding-left: 3px;
@@ -131,6 +143,8 @@ a{
 .go-back a:hover{
     left: 0px;
 }
+
+
 
 @keyframes change {
     0% {

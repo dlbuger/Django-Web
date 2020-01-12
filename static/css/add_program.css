@@ -131,7 +131,7 @@ body {
     border: 3px solid white;
     padding-left: 20px;
     padding-right: 20px;
-    transition: ease-in-out 0.4s;
+    transition: ease-in-out 0.2s;
 }
 
 .submit:hover {
@@ -144,6 +144,30 @@ body {
 
 #required input{
     border-bottom: 3px solid #ff7979;
+}
+
+
+#toast {
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    position: absolute;
+    background-color: #f6e58d;
+    color: #30336b;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    z-index: 1;
+    box-shadow: 1 1 20px rgba(0, 0, 0, 0.486);
+    visibility: hidden;
+    transition: ease-in-out 0.4s;
+}
+
+#toast.show {
+    visibility: visible;
+    top: 20px;
+    transition: 0.4s;
+    transform: translate(-50%, 0%);
 }
 
 @keyframes change {
