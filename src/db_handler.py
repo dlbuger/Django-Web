@@ -14,6 +14,8 @@ sql = ps.connections.Connection(
 # 预算成本 = pd.read_sql("SELECT * FROM 预算成本", sql)
 
 
+
+
 class SearchBackend:
     @staticmethod
     def hint():
@@ -75,22 +77,33 @@ def ExceptionHandler(func):
 
 class InsertBackend:
     @staticmethod
-    @ExceptionHandler
     def append_program(data: Dict) -> int:
         data = pd.Series(data)
-        项目待添加 = data[['合同号','项目名称','计划开始时间', '实际开始时间', '计划结束时间', '实际结束时间']].values.tolist()
-        query_项目待添加 = 'INSERT INTO 项目 (合同号, 项目名称, 预计开始日期, 实际开始日期, 预计结束日期, 实际结束日期) VALUES(%s, %s, %s, %s, %s, %s)'
+        handler = Handler(sql)
+        
+        项目待添加 = data[['合同号','项目名称','计划开始时间','计划结束时间', '实际开始时间', '实际结束时间']]
+        预算成本待添加 = data[['合同号', '计划硬件成本', '计划软件成本', '计划差旅成本', '计划集成成本', '计划施工成本']]
+        实际成本待添加 = data[['合同号', '实际硬件成本', '实际软件成本', '实际差旅成本', '实际集成成本', '实际施工成本']]
+        handler.INSERT('项目',项目待添加)
+        handler.INSERT('预算成本',预算成本待添加)
+        handler.INSERT('实际成本',实际成本待添加)
 
-        预算成本待添加 = data[['合同号', '计划硬件成本', '计划软件成本', '计划差旅成本', '计划集成成本', '计划施工成本']].values.tolist()
-        query_预算成本待添加 = 'INSERT INTO 预算成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
 
-        实际成本带添加 = data[['合同号', '实际硬件成本', '实际软件成本', '实际差旅成本', '实际集成成本', '实际施工成本']].values.tolist()
-        query_实际成本带添加 = 'INSERT INTO 实际成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
-        with sql.cursor() as cursor:
-            cursor.execute(query_项目待添加,项目待添加)
-            cursor.execute(query_预算成本待添加, 预算成本待添加)
-            cursor.execute(query_实际成本带添加, 实际成本带添加)
-        sql.commit()
+
+
+
+    # def append_program(data: Dict) -> int:
+    #     data = pd.Series(data)
+    #     query_项目待添加 = 'INSERT INTO 项目 (合同号, 项目名称, 预计开始日期, 实际开始日期, 预计结束日期, 实际结束日期) VALUES(%s, %s, %s, %s, %s, %s)'
+
+    #     query_预算成本待添加 = 'INSERT INTO 预算成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
+
+    #     query_实际成本带添加 = 'INSERT INTO 实际成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
+    #     with sql.cursor() as cursor:
+    #         cursor.execute(query_项目待添加,项目待添加)
+    #         cursor.execute(query_预算成本待添加, 预算成本待添加)
+    #         cursor.execute(query_实际成本带添加, 实际成本带添加)
+    #     sql.commit()
 
 
 
@@ -144,11 +157,24 @@ class Handler:
 
     @ExceptionHandler
     def SELECT(self, table_name: str) -> pd.DataFrame:
-        _query = "SELECT * FROM %s"%(table_name)
+        """ 
+            Inputs:
+                1. table_name <str>: 需要显示Table的名字
+            Return:
+                pandas.DataFrame
+        """
+        _query = "SELECT * FROM {table_name}"
         return pd.read_sql(_query, self.connection)
     
     @ExceptionHandler
     def TABLES(self) -> List:
+        """ 
+            显示当前数据库的所有Table名字
+            Inputs:
+                None
+            Return:
+                List[Table Name]
+        """
         _query = "SHOW TABLES;"
         with self.connection.cursor() as cursor:
             cursor.execute(_query)
@@ -158,26 +184,33 @@ class Handler:
     @ExceptionHandler
     def INSERT(self, table_name:str, data:pd.Series) -> None:
         '''
+            Inputs:
+                1. table_name <str>: 要插入Table的名字  
+                2. data <pandas.Series>: 待添加的数据
+            Return:
+                void
+
             NOTICE: 单个INSERT
             1. 检查传入的DataFrame的columns长度是否和数据库一直
             2. 检查传入的DataFrame的columns是否和数据库的一直
             3. 检查数据类型是否符合
         '''
-        schema = pd.read_sql(self.connection, "DESCRIBE %s"%table_name)
+        schema = pd.read_sql(f"DESCRIBE {table_name}",self.connection)
 
         _length = Check.checkLength(schema, data)
         _dtype = Check.checkDtype(schema, data)
         _duplicated = Check.checkDuplicated(self.connection, data)
         if _length:
-            COLUMNS = schema.Field.values.tolist()
+            _COLUMNS = schema.Field.values.tolist()
         else:
-            COLUMNS = schema.Field.values.tolist()[1:] # AUTO INCREMENT 在第0
+            _COLUMNS = schema.Field.values.tolist()[1:] # AUTO INCREMENT 在第0
 
         VALUES = data.values.tolist()
-        COLUMNS = re.sub("\'","",COLUMNS)
+        COLUMNS = re.sub("\'","",str(tuple(_COLUMNS)))
+
         with self.connection.cursor() as cursor:
             _query = f"INSERT INTO {table_name} {COLUMNS}\
-                        VALUES( " + "%s " * len(COLUMNS) + ");"
+                        VALUES( %s );"%("%s, " * (len(_COLUMNS)-1) + "%s")
             cursor.execute(_query, VALUES)
         sql.commit()
 
