@@ -26,8 +26,9 @@ from fuzzy_search.views import fuzzy_search #模糊搜索
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('search.urls')),
+    path('', include('home.urls')),
     path('', include('add_program.urls')),
+    path('accounts/', include('login.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

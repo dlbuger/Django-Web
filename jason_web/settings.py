@@ -42,10 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'search',
+    'home',
     'modify',
     'add_program',
     'fuzzy_search',
+    'login',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join('static'),
 ]
+
+LOGIN_REDIRECT_URL = '/'

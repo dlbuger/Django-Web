@@ -4,11 +4,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import FormView
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 from src import db_handler
 from .forms import ProgramRecord
 
+@login_required
 def get_form(request):
     if request.method == 'POST':
         form = ProgramRecord(request.POST)
@@ -20,5 +21,4 @@ def get_form(request):
             return redirect('/new-program')
     else:
         form = ProgramRecord()
-
     return render(request, 'add_program.html',{'form':form})
