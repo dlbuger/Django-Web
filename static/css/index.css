@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway|Roboto+Mono&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    background: #e55039;
     font-family: 'Raleway', sans-serif;
+    background: #eb4d4b;
 }
 
 .search-box {

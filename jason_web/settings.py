@@ -43,10 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'home',
-    'modify',
-    'add_program',
-    'fuzzy_search',
     'login',
+    'add_program',
+    'add_employee',
 ]
 
 MIDDLEWARE = [

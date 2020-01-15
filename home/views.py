@@ -17,9 +17,8 @@ def index(request):
 
 
 @login_required
-@allowed_users(allow=['Root'])
+@allowed_users(allow=['Root','读取员工','新增员工','修改员工'])
 def search_result(request, id):
-    print(request.user.groups.all()[0].name)
     if id is not None:
         if id in sb.employee_record():
             df = sb.search_by_employee(id).to_dict('records')[0]

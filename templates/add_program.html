@@ -20,8 +20,7 @@
         {% csrf_token %} {{ form.non_field_errors }}
         <div class="row_pair" id=required>
             <div class="left">
-                {{ form.项目名称.errors }} {{ form.项目名称.label_tag }}
-                {{ form.项目名称 }}
+                {{ form.项目名称.errors }} {{ form.项目名称.label_tag }} {{ form.项目名称 }}
             </div>
             <div class=" right">
                 {{ form.合同号.errors }} {{ form.合同号.label_tag}} {{ form.合同号 }}
@@ -50,7 +49,7 @@
             <div class="left">
                 {{ form.计划硬件成本.errors }} {{ form.计划硬件成本.label_tag }} {{ form.计划硬件成本 }}
             </div>
-            <div class=" right">
+            <div class="right">
                 {{ form.实际硬件成本.errors }} {{ form.实际硬件成本.label_tag }} {{ form.实际硬件成本}}
             </div>
         </div>

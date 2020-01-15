@@ -77,7 +77,7 @@ def ExceptionHandler(func):
 
 class InsertBackend:
     @staticmethod
-    def append_program(data: Dict) -> int:
+    def append_program(data: Dict) -> None:
         data = pd.Series(data)
         handler = Handler(sql)
         
@@ -87,7 +87,10 @@ class InsertBackend:
         handler.INSERT('项目',项目待添加)
         handler.INSERT('预算成本',预算成本待添加)
         handler.INSERT('实际成本',实际成本待添加)
-
+    
+    @staticmethod
+    def append_employee(data: Dict) -> None:
+        NotImplemented
 
 
 
