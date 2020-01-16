@@ -17,12 +17,24 @@ def index(request):
 
 
 @login_required
-@allowed_users(allow=['Root','读取员工','新增员工','修改员工'])
-def search_result(request, id):
+@allowed_users(allow=['root','读取员工'])
+def employee_search_result(request, id):
     if id is not None:
         if id in sb.employee_record():
-            df = sb.search_by_employee(id).to_dict('records')[0]
-            return render(request, 'employee.html', df)
+            df = sb.search_by_employee(id)
+            return render(request, 'employee/employee.html', df)
         else:
             messages.error(request,'没有这个记录!')
+            return redirect('/')
+
+@login_required
+@allowed_users(allow=['Root','读取项目'])
+def program_search_result(request, id):
+    if id is not None:
+        if id in sb.program_record():
+            df = sb.search_by_contract(id)
+            print(df)
+            return render(request, 'program/program.html',df)
+        else: 
+            messages.error(request, '没有这个记录')
             return redirect('/')

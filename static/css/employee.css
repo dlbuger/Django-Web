@@ -103,13 +103,7 @@ a{
     letter-spacing: 3px;
 }
 
-.pair{
-    transition: 0.15s;
-}
 
-.pair:hover {
-    font-size: 125%;
-}
 
 #employee_name {
     padding-left: 30px;
@@ -144,6 +138,26 @@ a{
     left: 0px;
 }
 
+.edit{
+    color: #dfe6e9;
+    font-size: 23px;
+    position: absolute;
+    border: 2px solid #2ecc71;
+    border-radius: 40px;
+    right: 30px;
+    bottom: 30px;
+    padding: 10px;
+    padding-left:10px;
+    padding-right:10px;
+    width: 120px;
+    text-align: center;
+    letter-spacing: 3px;
+    transition: 350ms;
+}
+.edit:hover{
+    background: #2ecc71;
+    color: #dfe6e9;
+}
 
 
 @keyframes change {

@@ -33,6 +33,7 @@ body {
     border: none;
     outline: none;
     animation: change 3s ease-in-out infinite;
+    cursor: pointer;
 }
 
 .search-text {

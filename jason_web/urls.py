@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('login.urls')),
     path('', include('add_program.urls')),
     path('', include('add_employee.urls')),
+    path('', include('edit_employee.urls')),
 
 ]
 

@@ -23,4 +23,4 @@ def get_form(request):
             return redirect('/new-program')
     else:
         form = ProgramRecord()
-    return render(request, 'add_program.html',{'form':form})
+    return render(request, 'program/add_program.html',{'form':form})

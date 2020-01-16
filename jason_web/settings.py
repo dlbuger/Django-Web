@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'login',
     'add_program',
     'add_employee',
+    'edit_employee',
 ]
 
 MIDDLEWARE = [

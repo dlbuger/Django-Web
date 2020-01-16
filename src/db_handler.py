@@ -23,33 +23,43 @@ class SearchBackend:
 
     @staticmethod
     def search_by_employee(id):
-        query = '''
+        query = f'''
             SELECT 员工.员工号, 姓名, 部门, 单位人工, 合同号, 预算人工, 实际人工, 修正1, 修正2, 修正3\
             FROM 人工成本, 员工
-            WHERE 人工成本.员工号 = 员工.员工号;
+            WHERE 人工成本.员工号 = 员工.员工号 AND 员工.员工号={id};
             '''
-        df = pd.read_sql(query, sql)
-        return df[df['员工号']==id]
+        df = pd.read_sql(query, sql).to_dict('records')[0]
+        return df
 
 
     @staticmethod
     def search_by_contract(id):
-        query1 = """
-            SELECT 预算成本.合同号,项目名称, 硬件成本,软件成本,差旅成本,集成成本,施工成本,预计开始日期,预计结束日期,实际开始日期,实际结束日期
-            FROM 预算成本 LEFT JOIN 项目 ON 预算成本.合同号=项目.合同号
-            UNION
-            SELECT 预算成本.合同号,项目名称, 硬件成本,软件成本,差旅成本,集成成本,施工成本,预计开始日期,预计结束日期,实际开始日期,实际结束日期
-            FROM 项目 RIGHT JOIN 预算成本 ON 预算成本.合同号=项目.合同号;
-            """
+        query1 = f"""
+            SELECT 合同号, 项目名称, 预计开始日期, 预计结束日期, 实际开始日期, 实际结束日期
+            FROM 项目
+            WHERE 合同号 = '{id}';
+        """
+        query2 = f"""
+            SELECT 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本
+            FROM 预算成本
+            WHERE 合同号 = '{id}';
+        """
+        query3 = f"""
+            SELECT 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本
+            FROM 实际成本
+            WHERE 合同号 = '{id}';
+        """
+        项目 = pd.read_sql(query1, sql).to_dict('records')[0]
+        
+        预算成本 = pd.read_sql(query2, sql)
+        预算成本.columns=['预算硬件成本','预算软件成本', '预算差旅成本', '预算集成成本', '预算施工成本']
+        预算成本 = 预算成本.to_dict('records')[0]
 
-        query2 = """
-            SELECT 实际成本.合同号,项目名称, 硬件成本,软件成本,差旅成本,集成成本,施工成本,预计开始日期,预计结束日期,实际开始日期,实际结束日期
-            FROM 实际成本 LEFT JOIN 项目 ON 实际成本.合同号=项目.合同号
-            UNION
-            SELECT 实际成本.合同号,项目名称, 硬件成本,软件成本,差旅成本,集成成本,施工成本,预计开始日期,预计结束日期,实际开始日期,实际结束日期
-            FROM 项目 RIGHT JOIN 实际成本 ON 实际成本.合同号=项目.合同号;
-                 """
-        return {'预算': pd.read_sql(query1, sql),'实际':pd.read_sql(query2, sql)}
+        实际成本 = pd.read_sql(query3, sql)
+        实际成本.columns=['实际硬件成本','实际软件成本', '实际差旅成本', '实际集成成本', '实际施工成本']
+        实际成本 = 实际成本.to_dict('records')[0]
+       
+        return {**项目, **预算成本, **实际成本}
 
     @staticmethod
     def employee_record():
@@ -59,11 +69,22 @@ class SearchBackend:
         '''
 
         query = '''
-        SELECT 员工.员工号, 姓名, 部门, 单位人工, 合同号, 预算人工, 实际人工, 修正1, 修正2, 修正3\
-        FROM 人工成本, 员工
-        WHERE 人工成本.员工号 = 员工.员工号;
+        SELECT 员工号
+        FROM 员工
         '''
         return pd.read_sql(query, sql)['员工号'].values
+
+    @staticmethod
+    def program_record():
+        """
+            返回一个所有项目的合同号List, 用来判定搜索id是否存在于数据库
+        """
+
+        query = """
+            SELECT 合同号
+            FROM 项目 
+        """
+        return pd.read_sql(query,sql)['合同号'].values
 
 def ExceptionHandler(func):
     def wrapper(*args, **kwargs):
@@ -81,9 +102,12 @@ class InsertBackend:
         data = pd.Series(data)
         handler = Handler(sql)
         
-        项目待添加 = data[['合同号','项目名称','计划开始时间','计划结束时间', '实际开始时间', '实际结束时间']]
+        项目待添加 = data[['合同号','项目名称','预计开始日期','预计结束日期', '实际开始日期', '实际结束日期']]
         预算成本待添加 = data[['合同号', '计划硬件成本', '计划软件成本', '计划差旅成本', '计划集成成本', '计划施工成本']]
+        预算成本待添加.index=['合同号', '硬件成本', '软件成本','差旅成本','集成成本','施工成本']
         实际成本待添加 = data[['合同号', '实际硬件成本', '实际软件成本', '实际差旅成本', '实际集成成本', '实际施工成本']]
+        实际成本待添加.index=['合同号', '硬件成本', '软件成本','差旅成本','集成成本','施工成本']
+
         handler.INSERT('项目',项目待添加)
         handler.INSERT('预算成本',预算成本待添加)
         handler.INSERT('实际成本',实际成本待添加)
@@ -94,60 +118,6 @@ class InsertBackend:
         handler = Handler(sql)
         员工待添加 = data[['姓名','员工号', '部门', '单位人工']]
         handler.INSERT('员工', 员工待添加)
-
-
-
-
-
-    # def append_program(data: Dict) -> int:
-    #     data = pd.Series(data)
-    #     query_项目待添加 = 'INSERT INTO 项目 (合同号, 项目名称, 预计开始日期, 实际开始日期, 预计结束日期, 实际结束日期) VALUES(%s, %s, %s, %s, %s, %s)'
-
-    #     query_预算成本待添加 = 'INSERT INTO 预算成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
-
-    #     query_实际成本带添加 = 'INSERT INTO 实际成本 (合同号, 硬件成本, 软件成本, 差旅成本, 集成成本, 施工成本) VALUES(%s, %s, %s, %s, %s, %s)'
-    #     with sql.cursor() as cursor:
-    #         cursor.execute(query_项目待添加,项目待添加)
-    #         cursor.execute(query_预算成本待添加, 预算成本待添加)
-    #         cursor.execute(query_实际成本带添加, 实际成本带添加)
-    #     sql.commit()
-
-
-
-class Check:
-    """
-        一些帮出判定数据的Function
-    """
-    @staticmethod
-    @ExceptionHandler
-    def checkLength(schema_data: pd.DataFrame, data: pd.Series) -> bool:
-        '''
-            NOTICE: 只有一个是自曾的情况下
-            1. 检查长度是否一样
-            2. 如果不一样 判定是否有autoincrement -> 无: 报错
-        '''
-        if len(schema_data) != len(data.index):
-            if "auto_increment" not in schema_data['Extra'].values:
-                raise ps.DatabaseError("传入数据的columns长度和Table的columns的长度不匹配,操作终止")
-            return False
-        else:
-            return True
-                
-    @staticmethod
-    @ExceptionHandler
-    def checkDtype(schema_data: pd.DataFrame, data:pd.DataFrame) -> None:
-        """
-            判定数据类型是否匹配
-        """
-        NotImplemented
-
-    @staticmethod
-    @ExceptionHandler
-    def checkDuplicated(con: ps.connections.Connection, data:pd.DataFrame) -> None:
-        """
-            判定是否有重复的数据
-        """
-        NotImplemented
 
 
 class Handler:
@@ -203,22 +173,18 @@ class Handler:
             2. 检查传入的DataFrame的columns是否和数据库的一直
             3. 检查数据类型是否符合
         '''
-        schema = pd.read_sql(f"DESCRIBE {table_name}",self.connection)
 
-        _length = Check.checkLength(schema, data)
-        _dtype = Check.checkDtype(schema, data)
-        _duplicated = Check.checkDuplicated(self.connection, data)
-        if _length:
-            _COLUMNS = schema.Field.values.tolist()
-        else:
-            _COLUMNS = schema.Field.values.tolist()[1:] # AUTO INCREMENT 在第0
+
+        _COLUMNS = data.index.values.tolist()
 
         VALUES = data.values.tolist()
         COLUMNS = re.sub("\'","",str(tuple(_COLUMNS)))
+        print(COLUMNS)
 
         with self.connection.cursor() as cursor:
             _query = f"INSERT INTO {table_name} {COLUMNS}\
                         VALUES( %s );"%("%s, " * (len(_COLUMNS)-1) + "%s")
+            print(_query)
             cursor.execute(_query, VALUES)
         sql.commit()
 

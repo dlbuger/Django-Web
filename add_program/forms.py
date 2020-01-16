@@ -27,12 +27,12 @@ class ProgramRecord(forms.Form):
     合同号 = forms.CharField(widget=forms.TextInput(), required=True)
 
     # 开始时间
-    计划开始时间 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
-    实际开始时间 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
+    预计开始日期 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
+    实际开始日期 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
 
     # 结束时间
-    计划结束时间 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
-    实际结束时间 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
+    预计结束日期 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
+    实际结束日期 = forms.DateField(required=False, widget=forms.TextInput(attrs={'type':'date'}))
 
     # 硬件成本
     计划硬件成本 = forms.FloatField(required=False, widget=forms.TextInput())
