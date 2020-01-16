@@ -3,6 +3,8 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/add_employee.css' %}">
+<script src="{% static 'js/base.js' %}"></script>
+
 {% endblock head%}
 
 {% block title %}新增员工{% endblock title %}
@@ -16,7 +18,7 @@
 <div class="add_record">
     <form method="post">
         {% csrf_token %} {{ form.non_field_errors }}
-        <div class="row_pair">
+        <div class="row_pair"  id='required'>
             <div class="left">
                 {{ form.姓名.errors }} {{ form.姓名.label_tag }} {{ form.姓名 }}
             </div>
@@ -33,16 +35,6 @@
                 {{ form.单位人工.errors }} {{ form.单位人工.label_tag }} {{ form.单位人工 }}
             </div>
         </div>
-
-        <div class="row_pair">
-            <div class="left">
-                {{ form.预算人工.errors }} {{ form.预算人工.label_tag }} {{ form.预算人工 }}
-            </div>
-            <div class="right">
-                {{ form.实际人工.errors }} {{ form.实际人工.label_tag }} {{ form.实际人工}}
-            </div>
-        </div>
-
         <button class='submit' type='submit' onclick="return confirm('是否确定提交表格?')">
             提交
         </button>

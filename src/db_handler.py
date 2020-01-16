@@ -70,7 +70,7 @@ def ExceptionHandler(func):
         try:
             func(*args, **kwargs)
         except Exception as e:
-            warnings.warn("执行Query失败\n%s"%e)
+            warnings.warn("执行Query失败\n%s"%str(e))
     return wrapper
 
 
@@ -90,7 +90,11 @@ class InsertBackend:
     
     @staticmethod
     def append_employee(data: Dict) -> None:
-        NotImplemented
+        data = pd.Series(data)
+        handler = Handler(sql)
+        员工待添加 = data[['姓名','员工号', '部门', '单位人工']]
+        handler.INSERT('员工', 员工待添加)
+
 
 
 
@@ -126,7 +130,8 @@ class Check:
             if "auto_increment" not in schema_data['Extra'].values:
                 raise ps.DatabaseError("传入数据的columns长度和Table的columns的长度不匹配,操作终止")
             return False
-        return True
+        else:
+            return True
                 
     @staticmethod
     @ExceptionHandler
@@ -184,7 +189,7 @@ class Handler:
             callback = cursor.fetchall()
         return [x[0] for x in callback]            
     
-    @ExceptionHandler
+    # @ExceptionHandler
     def INSERT(self, table_name:str, data:pd.Series) -> None:
         '''
             Inputs:

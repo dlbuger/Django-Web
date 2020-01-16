@@ -16,6 +16,7 @@ def get_form(request):
         form = EmployeeRecord(request.POST)
 
         if form.is_valid():
+            print(form.cleaned_data)
             db_handler.InsertBackend.append_employee(form.cleaned_data)
             messages.success(request, "员工添加成功!")
             return redirect('/new-employee')
